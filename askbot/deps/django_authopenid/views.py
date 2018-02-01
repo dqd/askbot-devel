@@ -331,6 +331,10 @@ def complete_oauth2_signin(request):
                                         provider_name='google-plus'
                                     )
                     assoc.save()
+    elif provider_name == 'registr':
+        person = client.request('profile.json')['person']
+        request.session['email'] = person.get('email', '')
+        request.session['username'] = u'{} {}'.format(person['first_name'], person['last_name'])
 
     return finalize_generic_signin(
                         request=request,
