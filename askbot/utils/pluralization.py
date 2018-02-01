@@ -68,7 +68,7 @@ def slovenian(count):
         return 2
     return 3
 
-def chech(count):
+def czech(count):
     if count == 1:
         return 0
     elif count >=2 and count <=4:
@@ -84,7 +84,7 @@ FORMULAE = {
     'singular': singular,
     'romanian': romanian,
     'slovenian': slovenian,
-    'chech': chech,
+    'czech': czech,
     'francoid': francoid
 }
 
@@ -102,7 +102,7 @@ SLAVIC_FAMILY = (
 ROMANIAN_FAMILY = ('ro',)
 POLISH_FAMILY = ('pl',)
 SLOVENIAN_FAMILY = ('sl',)
-CHECH_FAMILY = ('cs', 'cs_CZ')
+CZECH_FAMILY = ('cs', 'cs_CZ')
 
 SINGULAR_FAMILY = (
     'zh_HK', 'fa_IR', 'zh_CN', 'id_ID', 'zh_TW', 'ko', 'ms_MY', 'tr', 'tr_TR', 'vi', 'ja', 'uz', 'uz_UZ'
@@ -126,6 +126,8 @@ def get_formula(lang):
         return polish
     elif lang in SLOVENIAN_FAMILY:
         return slovenian
+    elif lang in CZECH_FAMILY:
+        return czech
     elif lang in SINGULAR_FAMILY:
         return singular
     logging.critical('language %s not supported by askbot.utils.pluralization' % lang)

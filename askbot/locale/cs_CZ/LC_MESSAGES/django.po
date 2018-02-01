@@ -3186,7 +3186,7 @@ msgstr "otázka zodpovězena"
 msgid ""
 "question\n"
 "questions"
-msgstr "otázka\notázky"
+msgstr "otázka\notázky\notázek"
 
 #: conf/words.py:274
 msgid "Countable plural forms for \"question\""
@@ -3200,7 +3200,7 @@ msgstr "Zadejte pozorně jeden výraz na řádek"
 msgid ""
 "answer\n"
 "answers"
-msgstr "odpověď\nodpovědi"
+msgstr "odpověď\nodpovědi\nodpovědí"
 
 #: conf/words.py:285
 msgid "Countable plural forms for \"answer\""
