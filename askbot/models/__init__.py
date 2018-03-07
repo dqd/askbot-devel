@@ -569,9 +569,10 @@ def get_or_create_anonymous_user():
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        user = User()
-        user.username = username
-        user.email = askbot_settings.ANONYMOUS_USER_EMAIL
+        user = User.objects.create(
+            username=username,
+            email=askbot_settings.ANONYMOUS_USER_EMAIL,
+        )
         user.is_fake = True
         user.set_unusable_password()
         user.save()
@@ -2484,7 +2485,7 @@ def user_is_owner_of(self, obj):
 
 def get_name_of_anonymous_user():
     """Returns name of the anonymous user
-    either comes from the live settyngs or the language
+    either comes from the live settings or the language
     translation
 
     very possible that this function does not belong here
