@@ -86,29 +86,9 @@
     var hours = minutes / 60;
     var days = hours / 24;
     var years = days / 365;
-    var months = [
-        gettext('Jan'),
-        gettext('Feb'),
-        gettext('Mar'),
-        gettext('Apr'),
-        gettext('May'),
-        gettext('Jun'),
-        gettext('Jul'),
-        gettext('Aug'),
-        gettext('Sep'),
-        gettext('Oct'),
-        gettext('Nov'),
-        gettext('Dec')
-    ];
     //todo: rewrite this in javascript
     if (days > 2){
-        var month_date = months[date.getMonth()] + ' ' + date.getDate()
-        if (years == 0){
-            //how to do this in js???
-            return month_date;
-        } else {
-            return month_date + ' ' + "'" + date.getYear() % 20;
-        }
+        return date.toLocaleDateString();
     } else if (days == 2) {
         return gettext('2 days ago')
     } else if (days == 1) {

@@ -37,15 +37,16 @@ register = coffin_template.Library()
 
 absolutize_urls = register.filter(absolutize_urls)
 
-TIMEZONE_STR = pytz.timezone(
-                    django_settings.TIME_ZONE
-                ).localize(
-                    datetime.datetime.now()
-                ).strftime('%z')
+def timezone_str(datetime_object):
+    return str(datetime_object) + ' ' + pytz.timezone(
+        django_settings.TIME_ZONE
+    ).localize(
+        datetime_object
+    ).strftime('%z')
 
 @register.filter
 def add_tz_offset(datetime_object):
-    return str(datetime_object) + ' ' + TIMEZONE_STR
+    return timezone_str(datetime_object)
 
 @register.filter
 def as_js_bool(some_object):

@@ -709,10 +709,9 @@ def __generate_comments_json(obj, user, avatar_size):
 
 
         comment_owner = comment.author
-        tz = ' ' + template_filters.TIMEZONE_STR
         comment_data = {'id' : comment.id,
             'object_id': obj.id,
-            'comment_added_at': str(comment.added_at.replace(microsecond = 0)) + tz,
+            'comment_added_at': template_filters.timezone_str(comment.added_at.replace(microsecond=0)),
             'html': comment.html,
             'user_display_name': escape(comment_owner.username),
             'user_profile_url': comment_owner.get_profile_url(),
@@ -839,10 +838,7 @@ def edit_comment(request):
     is_editable = template_filters.can_edit_comment(
                             comment_post.author, comment_post)
 
-    tz = ' ' + template_filters.TIMEZONE_STR
-
-    tz = template_filters.TIMEZONE_STR
-    timestamp = str(comment_post.added_at.replace(microsecond=0)) + tz
+    timestamp = template_filters.timezone_str(comment_post.added_at.replace(microsecond=0))
 
     #need this because the post.text is due to the latest approved
     #revision, but we may need the suggested revision
