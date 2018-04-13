@@ -1,4 +1,5 @@
 {% load compress %}
+{% load static %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -33,7 +34,7 @@
             {{settings.CUSTOM_HEADER}}
         </div>
         {% endif %}
-        {% include "widgets/header.html" %} {# Logo, user tool navigation and meta navitation #}
+        {% include "widgets/header.html" %} {# Logo, user tool navigation and meta navigation #}
         {% include "widgets/secondary_header.html" %} {# Scope selector, search input and ask button #}
         {% if settings.ENABLE_LEADING_SIDEBAR %}
         <div id="leading-sidebar">
@@ -60,5 +61,6 @@
                 askbot['urls'][url_name] = cleanUrl(askbot['urls'][url_name]);
             }
         </script>
+        <script type="text/javascript" src="{% static 'svobodni/media/js/extra.js' %}"></script>
     </body>
 </html>
