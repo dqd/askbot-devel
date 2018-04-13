@@ -1,0 +1,25 @@
+{% import "macros.html" as macros%}
+<a class="help" href="{% url "help" %}" title="{% trans %}Help{% endtrans %}">{% trans %}Help{% endtrans %}</a>
+{% if settings.BADGES_MODE == 'public' %}
+<a
+  id="navBadges"
+  href="{% url badges %}"
+  {% if active_tab == 'badges' %}class="on"{% endif %}
+>{% trans %}Badges{% endtrans %}</a>
+{% endif %}
+{% if settings.GROUPS_ENABLED %}
+<span class="dropdown groups-dropdown">
+<a
+  id="navGroups" 
+  {% if active_tab == 'groups' %}class="on"{% endif %}
+  href="{% url groups %}" data-target="#" >
+  {% trans %}People & groups{% endtrans %}
+</a>
+</span>
+{%else%}
+<a 
+  id="navUsers"
+  href="{% url users %}"
+  {% if active_tab == 'users' %}class="on"{% endif %}
+>{% trans %}Users{% endtrans %}</a>
+{% endif %}

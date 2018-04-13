@@ -1,0 +1,57 @@
+{% from "macros.html" import user_country_flag, tag_list_widget, timeago, user_primary_group %}
+<div class="short-summary{% if extra_class %} {{extra_class}}{% endif %}" id="question-{{question.id}}">
+    <h2><a href="{{ question.get_absolute_url(thread=thread) }}">{{thread.get_title()|escape}}</a></h2>
+    <div class="components">
+        <div class="userinfo">
+            {{ timeago(thread.last_activity_at) }}
+            <div class="usr">
+                {% set latest_revision = thread.get_latest_revision(user=visitor) %}
+                {% if latest_revision and latest_revision.is_anonymous %}
+                    <span class="anonymous">{{ thread.last_activity_by.get_anonymous_name() }}</span>
+                {% else %}
+                    <a href="{% url user_profile thread.last_activity_by.id, thread.last_activity_by.username|slugify %}">{{thread.last_activity_by.username|escape}}</a> {{ user_country_flag(thread.last_activity_by) }}
+                    {% if thread.last_activity_by.get_primary_group() %}
+                    - {{ user_primary_group(thread.last_activity_by) }}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="counts">
+            <div class="votes
+                {% if question.score == 0 -%}
+                    no-votes
+                {% else -%}
+                    some-votes
+                {%- endif -%}"
+                title="{{question.score}} {% trans cnt=question.score %}vote{% pluralize %}votes{% endtrans %}">
+                <div class="voteup"></div>
+                <div class="votecount">{{ question.score }}</div>
+                <div class="votedown"></div>
+            </div>
+            {% set answer_count = thread.get_answer_count(visitor) %}
+            <div class="answers
+                {% if answer_count == 0 -%}
+                    no-answers
+                {% else -%}
+                    {%- if thread.accepted_answer_id -%}  {# INFO: Use _id to not fetch the whole answer post #}
+                        accepted
+                    {%- else -%}
+                        some-answers
+                    {%- endif -%}
+                {%- endif -%}"
+                 title="{{ answer_count|humanize_counter }} {{ settings.WORDS_ANSWERS_COUNTABLE_FORMS|py_pluralize(answer_count)|escape }}">
+                {{ answer_count }}&times;
+            </div>
+            <div class="views
+                 {% if thread.view_count == 0 -%}
+                    no-views
+                 {% else -%}
+                    some-views
+                 {%- endif -%}"
+                 title="{{ thread.view_count|humanize_counter }} {% trans cnt=thread.view_count %}view{% pluralize %}views{% endtrans %}">
+                {{ thread.view_count }}&times;
+            </div>
+        </div>
+        {{ tag_list_widget(thread.get_tag_names(), search_state=search_state) }}
+    </div>
+</div>

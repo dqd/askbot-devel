@@ -1,0 +1,26 @@
+{{ macros.post_vote_buttons(post = question) }}
+
+{% set answer_count = thread.get_answer_count(visitor) %}
+<div class="answers
+    {% if answer_count == 0 -%}
+        no-answers
+    {% else -%}
+        {%- if thread.accepted_answer_id -%}  {# INFO: Use _id to not fetch the whole answer post #}
+            accepted
+        {%- else -%}
+            some-answers
+        {%- endif -%}
+    {%- endif -%}"
+     title="{{ answer_count|humanize_counter }} {{ settings.WORDS_ANSWERS_COUNTABLE_FORMS|py_pluralize(answer_count)|escape }}">
+    {{ answer_count }}&times;
+</div>
+<div class="views
+     {% if thread.view_count == 0 -%}
+        no-views
+     {% else -%}
+        some-views
+     {%- endif -%}"
+     title="{{ thread.view_count|humanize_counter }} {% trans cnt=thread.view_count %}view{% pluralize %}views{% endtrans %}">
+    {{ thread.view_count }}&times;
+</div>
+

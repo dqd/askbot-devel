@@ -867,6 +867,14 @@ msgstr "minimální počet použití štítku"
 msgid "Teacher"
 msgstr "Učitel"
 
+#: conf/badges.py:251 models/badges.py:833
+msgid "Rapid Responder"
+msgstr "Rychlík"
+
+#: models/badges.py:829
+msgid "Responded to question within %(max_delay)s hours"
+msgstr "Stihl odpovědět na otázku v průběhu %(max_delay)s hodin"
+
 #: conf/email.py:16
 msgid "Email and email alert settings"
 msgstr "E-mail a nastavení e-mailových upozornění"
@@ -5768,6 +5776,14 @@ msgid ""
 "This post is a wiki.\n"
 "        Anyone with karma &gt;%(wiki_min_rep)s is welcome to improve it."
 msgstr "Tento příspěvek je wiki.\nUvítáme jeho vylepšní od kohokoliv s karmou &gt;%(wiki_min_rep)s."
+
+#: templates/macros.html:111
+msgid "posted"
+msgstr "zveřejněno"
+
+#: templates/macros.html:114
+msgid "updated"
+msgstr "aktualizováno"
 
 #: templates/macros.html:239 templates/macros.html.py:245
 msgid "Leave this group"

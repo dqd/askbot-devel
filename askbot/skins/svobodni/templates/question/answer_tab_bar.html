@@ -1,0 +1,8 @@
+<div class="tabBar tabBar-answer">
+        <a id="oldest" href="{{ question.get_absolute_url() }}?sort=oldest#sort-top"
+        ><span>{% trans %}oldest{% endtrans %}</span></a>
+        <a id="latest" href="{{ question.get_absolute_url() }}?sort=latest#sort-top"
+        ><span>{% trans %}newest{% endtrans %}</span></a>
+        <a id="votes" href="{{ question.get_absolute_url() }}?sort=votes#sort-top"
+        ><span>{% trans %}most voted{% endtrans %}</span></a>
+</div>
