@@ -7567,7 +7567,7 @@ msgstr "přidat skupinu"
 
 #: templates/user_profile/user_info.html:103
 msgid "member since"
-msgstr "členem od"
+msgstr "registrován"
 
 #: templates/user_profile/user_info.html:108
 msgid "last seen"

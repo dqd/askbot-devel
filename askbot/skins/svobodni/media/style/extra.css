@@ -501,6 +501,18 @@ h2#questionCount .count,
     margin: 10px 0 0 0;
   }
 }
+.user-details td {
+  vertical-align: middle;
+}
+.svobodni-badge {
+  display: inline-block;
+  font-weight: bold;
+  background-color: #fbfbfb;
+  border: 2px solid #009782;
+  border-radius: 5px;
+  padding: 3px 6px;
+  margin-top: 5px;
+}
 #pager .paginator,
 .pager .paginator {
   float: none !important;

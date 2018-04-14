@@ -297,6 +297,8 @@ class RegistrationForm(forms.Form):
     """ openid signin form """
     next = NextUrlField()
     username = UserNameField(widget_attrs={'tabindex': 0})
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)

@@ -89,6 +89,7 @@ from askbot.deps.django_authopenid import util
 from askbot.deps.django_authopenid.models import UserAssociation, UserEmailVerifier
 from askbot.deps.django_authopenid import forms
 from askbot.deps.django_authopenid.backends import AuthBackend
+from askbot.models.user_profile import get_profile_from_db
 import logging
 from askbot.utils.forms import get_next_url
 from askbot.utils.http import get_request_info
@@ -102,13 +103,18 @@ def get_next_url_from_session(session):
 def create_authenticated_user_account(
     username=None, email=None, password=None,
     user_identifier=None, login_provider_name=None,
-    request=None
+    request=None, first_name='', last_name='',
 ):
     """creates a user account, user association with
     the login method and the the default email subscriptions
     """
 
-    user = User.objects.create_user(username, email)
+    user = User.objects.create_user(
+        username,
+        email,
+        first_name=first_name,
+        last_name=last_name,
+    )
     user_registered.send(None, user=user, request=request)
 
     logging.debug('creating new openid user association for %s', username)
@@ -121,7 +127,8 @@ def create_authenticated_user_account(
             openid_url = user_identifier,
             user = user,
             provider_name = login_provider_name,
-            last_used_timestamp = timezone.now()
+            last_used_timestamp = timezone.now(),
+            meta = simplejson.dumps(request.session.get('meta', {})),
         ).save()
 
     subscribe_form = askbot_forms.SimpleEmailSubscribeForm({'subscribe': 'y'})
@@ -164,6 +171,16 @@ def login(request, user):
 
     # login and get new session key
     _login(request, user)
+
+    if 'first_name' in request.session and 'last_name' in request.session:
+        user.first_name = request.session['first_name']
+        user.last_name = request.session['last_name']
+        get_profile_from_db(user)
+
+    if request.session.get('meta'):
+        user.userassociation_set.filter(provider_name='registr').update(
+            meta=simplejson.dumps(request.session.get('meta', {})),
+        )
 
     # send signal with old session key as argument
     logging.debug('logged in user %s with session key %s' % (user.username, session_key))
@@ -335,6 +352,9 @@ def complete_oauth2_signin(request):
         person = client.request('profile.json')['person']
         request.session['email'] = person.get('email', '')
         request.session['username'] = u'{} {}'.format(person['first_name'], person['last_name'])
+        request.session['first_name'] = person['first_name']
+        request.session['last_name'] = person['last_name']
+        request.session['meta'] = person
 
     return finalize_generic_signin(
                         request=request,
@@ -1160,6 +1180,8 @@ def register(request, login_provider_name=None,
                     'next': next_url,
                     'username': request.session.get('username', ''),
                     'email': request.session.get('email', ''),
+                    'first_name': request.session.get('first_name', ''),
+                    'last_name': request.session.get('last_name', ''),
                 }
             )
 
@@ -1193,6 +1215,8 @@ def register(request, login_provider_name=None,
         else:
             username = register_form.cleaned_data['username']
             email = register_form.cleaned_data['email']
+            first_name = register_form.cleaned_data['first_name']
+            last_name = register_form.cleaned_data['last_name']
 
             if 'ldap_user_info' in request.session:
                 user_info = request.session['ldap_user_info']
@@ -1212,6 +1236,8 @@ def register(request, login_provider_name=None,
                 user = create_authenticated_user_account(
                             username=username,
                             email=email,
+                            first_name=first_name,
+                            last_name=last_name,
                             user_identifier=user_identifier,
                             login_provider_name=login_provider_name,
                             request=request

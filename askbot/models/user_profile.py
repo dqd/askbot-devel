@@ -24,17 +24,30 @@ def get_localized_profile_cache_key(user, lang):
 
 def get_profile_from_db(user):
     if user.pk:
-        profile, junk = UserProfile.objects.get_or_create(auth_user_ptr=user)
+        real_name = u'{} {}'.format(
+            user.first_name,
+            user.last_name,
+        ).strip()
+        profile, junk = UserProfile.objects.get_or_create(
+            auth_user_ptr=user,
+            defaults= {
+                'real_name': real_name,
+            }
+        )
+
+        if profile.real_name != real_name:
+            profile.real_name = real_name
+            profile.save()
+
+        cache.set(get_profile_cache_key(user), profile)
         return profile
     raise ValueError('auth.models.User is not saved, cant make UserProfile')
 
 
 def get_profile(user):
-    key = get_profile_cache_key(user)
-    profile = cache.get(key)
+    profile = cache.get(get_profile_cache_key(user))
     if not profile:
         profile = get_profile_from_db(user)
-        cache.set(key, profile)
 
     setattr(user, 'askbot_profile', profile)
     return profile

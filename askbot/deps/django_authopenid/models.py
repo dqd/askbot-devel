@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import datetime
 
 from django.conf import settings
@@ -43,7 +44,7 @@ class UserAssociation(models.Model):
     model to manage association between openid and user
     """
     #todo: rename this field so that it sounds good for other methods
-    #for exaple, for password provider this will hold password
+    #for example, for password provider this will hold password
     openid_url = models.CharField(blank=False, max_length=255)
     user = models.ForeignKey(User)
     #in the future this must be turned into an
@@ -51,6 +52,7 @@ class UserAssociation(models.Model):
     #to hold things like login badge, etc
     provider_name = models.CharField(max_length=64, default='unknown')
     last_used_timestamp = models.DateTimeField(null=True)
+    meta = models.TextField(default='')
 
     class Meta(object):
         unique_together = (
@@ -64,6 +66,12 @@ class UserAssociation(models.Model):
     def update_timestamp(self):
         self.last_used_timestamp = datetime.datetime.now()
         self.save()
+
+    def get_meta(self):
+        try:
+            return json.loads(self.meta)
+        except ValueError:
+            return {}
 
 class UserPasswordQueueManager(models.Manager):
     """ manager for UserPasswordQueue object """

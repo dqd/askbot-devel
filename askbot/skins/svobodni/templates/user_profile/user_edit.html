@@ -47,7 +47,15 @@
         </tr>
         <tr>
             <td>{{ form.realname.label_tag() }}</td>
-            <td>{{ form.realname }} <span class="form-error"> {{ form.realname.errors }} </span></td>
+            <td>
+                {% if view_user.userassociation_set.filter(provider_name='registr').exists() %}
+                    {{ view_user.real_name|escape }}
+                    <input type="hidden" name="realname" value="{{ view_user.real_name }}">
+                {% else %}
+                    {{ form.realname }}
+                    <span class="form-error"> {{ form.realname.errors }} </span>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <td>{{ form.website.label_tag() }}</td>
