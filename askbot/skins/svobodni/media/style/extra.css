@@ -212,6 +212,7 @@ body .edit-question-page input.submit {
 ul.tags li {
   height: auto;
   line-height: 20px;
+  margin: 8px 8px 0 0;
 }
 ul.tags li .js-tag {
   background-color: #ffffff;
@@ -391,7 +392,7 @@ h2#questionCount .count,
 }
 #question-list .counts .votes {
   display: flex;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 #question-list .counts .votes .votecount {
   color: #666666;
@@ -444,7 +445,7 @@ h2#questionCount .count,
 #question-list .counts .answers,
 .vote-buttons .answers {
   padding-right: 38px;
-  margin-right: 20px;
+  margin-right: 40px;
   background: url(../images/answers.png) no-repeat right 11px;
 }
 #question-list .counts .views,
@@ -465,7 +466,7 @@ h2#questionCount .count,
   line-height: 28px;
 }
 .vote-buttons .answers {
-  margin-left: 20px;
+  margin-left: 40px;
 }
 .vote-buttons .answers,
 .vote-buttons .views {
@@ -503,6 +504,13 @@ h2#questionCount .count,
 }
 .user-details td {
   vertical-align: middle;
+}
+.user-profile-page h2 {
+  margin-top: 30px;
+}
+.user-info-table .js-avatar,
+.user-card .js-avatar {
+  height: auto !important;
 }
 .svobodni-badge {
   display: inline-block;

@@ -9,7 +9,7 @@
     <div class="col1">
         <div class='avatar'>
             {{ macros.gravatar(view_user, 128) }}
-            {% if request.user.pk == view_user.pk %}
+            {% if request.user.pk == view_user.pk and not view_user.userassociation_set.filter(provider_name='registr').exists() %}
                 <p><a 
                     {% if support_custom_avatars %}
                         href="{% url askbot_avatar_show_list view_user.id %}"

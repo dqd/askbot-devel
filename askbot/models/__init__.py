@@ -3,6 +3,7 @@ startup_procedures.run()
 
 from django.contrib.auth.models import User
 
+import json
 import askbot
 import collections
 import datetime
@@ -231,6 +232,16 @@ def user_get_avatar_url(self, size=48):
     JSONField .avatar_urls is used as "cache"
     to avoid multiple db hits to fetch avatar urls
     """
+    try:
+        meta = json.loads(
+            self.userassociation_set.get(
+                provider_name='registr',
+            ).meta
+        )
+        return meta['photo_url']
+    except Exception:
+        pass
+
     size = str(size)
     url = self.avatar_urls.get(size)
     if not url:
